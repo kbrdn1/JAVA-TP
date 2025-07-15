@@ -38,7 +38,7 @@ public class GlobalExceptionInterceptor {
   // Note: also catches nullable = false constraints
   // if @NotNull annotation is missing in the model for example
   @ExceptionHandler(DataIntegrityViolationException.class)
-  @ResponseStatus(HttpStatus.CONFLICT) // Code de retour
+  @ResponseStatus(HttpStatus.CONFLICT) // Return code
   @ResponseBody // Ensures that the response is sent in JSON format (in the response body)
   public Map<String, Object> handleDataIntegrityViolationException(
     DataIntegrityViolationException ex

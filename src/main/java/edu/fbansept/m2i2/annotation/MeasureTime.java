@@ -15,8 +15,8 @@ import java.lang.annotation.Target;
  * @MeasureTime(logLevel = "DEBUG", unit = "MILLISECONDS")
  * public void anotherMethod() { ... }
  */
-@Target(ElementType.METHOD)              // Peut être utilisée uniquement sur les méthodes
-@Retention(RetentionPolicy.RUNTIME)      // Disponible à l'exécution (pour la réflexion)
+@Target(ElementType.METHOD)              // Can only be used on methods
+@Retention(RetentionPolicy.RUNTIME)      // Available at runtime (for reflection)
 public @interface MeasureTime {
     
     /**
