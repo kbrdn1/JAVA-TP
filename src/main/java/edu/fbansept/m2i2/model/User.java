@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import edu.fbansept.m2i2.view.BasicView;
 import edu.fbansept.m2i2.view.UserBasicView;
 import edu.fbansept.m2i2.view.UserSummaryView;
 import edu.fbansept.m2i2.view.UserDetailView;
@@ -26,7 +27,7 @@ public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @JsonView(UserBasicView.class)
+  @JsonView({BasicView.class, UserBasicView.class})
   protected Integer id;
 
   @Column(nullable = false, unique = true)
@@ -37,7 +38,7 @@ public class User {
     groups = { add.class, update.class },
     message = "Email is malformed"
   )
-  @JsonView(UserBasicView.class)
+  @JsonView({BasicView.class, UserBasicView.class})
   protected String email;
 
   @Column(nullable = false)

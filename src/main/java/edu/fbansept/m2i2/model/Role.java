@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import edu.fbansept.m2i2.view.BasicView;
 import edu.fbansept.m2i2.view.RoleBasicView;
 import edu.fbansept.m2i2.view.RoleWithUsersView;
 
@@ -24,12 +25,12 @@ public class Role {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @JsonView(RoleBasicView.class)
+  @JsonView({BasicView.class, RoleBasicView.class})
   protected Integer id;
 
   @NotBlank(groups = { add.class, update.class })
   @Column(unique = true, nullable = false)
-  @JsonView(RoleBasicView.class)
+  @JsonView({BasicView.class, RoleBasicView.class})
   protected String name;
 
   @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
