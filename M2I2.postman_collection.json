@@ -685,13 +685,13 @@
 			]
 		},
 		{
-			"name": "📊 JsonView Demonstrations",
+			"name": "📊 JsonView Working Demonstrations",
 			"item": [
 				{
-					"name": "Demo: User Basic vs Summary vs Detail",
+					"name": "✅ User Views Comparison (Fixed)",
 					"item": [
 						{
-							"name": "User Basic (ID + Email)",
+							"name": "1️⃣ UserBasicView - ID + Email Only (~50 bytes)",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -701,10 +701,34 @@
 									"path": ["api", "users", "entity", "{{user_id}}", "basic"]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "UserBasicView Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/users/entity/1/basic",
+											"host": ["{{base_url}}"],
+											"path": ["api", "users", "entity", "1", "basic"]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 1,\n    \"email\": \"john.client@example.com\"\n}"
+								}
+							]
 						},
 						{
-							"name": "User Summary (Basic + Role)",
+							"name": "2️⃣ UserSummaryView - Basic + Role (~120 bytes)",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -714,10 +738,34 @@
 									"path": ["api", "users", "entity", "{{user_id}}"]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "UserSummaryView Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/users/entity/1",
+											"host": ["{{base_url}}"],
+											"path": ["api", "users", "entity", "1"]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 1,\n    \"email\": \"john.client@example.com\",\n    \"role\": {\n        \"id\": 1,\n        \"name\": \"CLIENT\"\n    }\n}"
+								}
+							]
 						},
 						{
-							"name": "User Detail (Summary + Products)",
+							"name": "3️⃣ UserDetailView - Summary + Products (~500-2000 bytes)",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -727,59 +775,39 @@
 									"path": ["api", "users", "{{user_id}}"]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "UserDetailView Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/users/1",
+											"host": ["{{base_url}}"],
+											"path": ["api", "users", "1"]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 1,\n    \"email\": \"john.client@example.com\",\n    \"adminProducts\": [],\n    \"sellerProducts\": [],\n    \"clientProducts\": [\n        {\n            \"id\": 1,\n            \"name\": \"Laptop Dell XPS 13\",\n            \"price\": 1299.99,\n            \"description\": \"High-performance ultrabook\",\n            \"stock\": 15\n        }\n    ],\n    \"role\": {\n        \"id\": 1,\n        \"name\": \"CLIENT\"\n    }\n}"
+								}
+							]
 						}
 					]
 				},
 				{
-					"name": "Demo: Product Views Comparison",
+					"name": "✅ Product Views Comparison (Fixed)",
 					"item": [
 						{
-							"name": "Product Basic (Core Info Only)",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/products/basic",
-									"host": ["{{base_url}}"],
-									"path": ["api", "products", "basic"]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Product Summary (Basic + Users)",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/products/entity/{{product_id}}",
-									"host": ["{{base_url}}"],
-									"path": ["api", "products", "entity", "{{product_id}}"]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Product Detail (Full Info)",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/products/entity/{{product_id}}/detail",
-									"host": ["{{base_url}}"],
-									"path": ["api", "products", "entity", "{{product_id}}", "detail"]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Demo: Performance Comparison",
-					"item": [
-						{
-							"name": "Light Payload - Catalog View",
+							"name": "1️⃣ ProductCatalogView - Public Safe (~150 bytes)",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -789,10 +817,242 @@
 									"path": ["api", "products", "catalog"]
 								}
 							},
+							"response": [
+								{
+									"name": "ProductCatalogView Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/products/catalog",
+											"host": ["{{base_url}}"],
+											"path": ["api", "products", "catalog"]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Laptop Dell XPS 13\",\n        \"price\": 1299.99,\n        \"description\": \"High-performance ultrabook\",\n        \"stock\": 15\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "2️⃣ ProductSummaryView - Basic + Users (~350-500 bytes)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/products/with-users",
+									"host": ["{{base_url}}"],
+									"path": ["api", "products", "with-users"]
+								}
+							},
+							"response": [
+								{
+									"name": "ProductSummaryView Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/products/with-users",
+											"host": ["{{base_url}}"],
+											"path": ["api", "products", "with-users"]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Laptop Dell XPS 13\",\n        \"price\": 1299.99,\n        \"description\": \"High-performance ultrabook\",\n        \"stock\": 15,\n        \"admin\": {\n            \"id\": 2,\n            \"email\": \"jane.admin@example.com\"\n        },\n        \"seller\": {\n            \"id\": 3,\n            \"email\": \"mike.seller@example.com\"\n        },\n        \"client\": {\n            \"id\": 1,\n            \"email\": \"john.client@example.com\"\n        }\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "3️⃣ ProductDetailView - Full Detail (~800-1500 bytes)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/products/entity/{{product_id}}/detail",
+									"host": ["{{base_url}}"],
+									"path": ["api", "products", "entity", "{{product_id}}", "detail"]
+								}
+							},
+							"response": [
+								{
+									"name": "ProductDetailView Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/products/entity/1/detail",
+											"host": ["{{base_url}}"],
+											"path": ["api", "products", "entity", "1", "detail"]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 1,\n    \"name\": \"Laptop Dell XPS 13\",\n    \"price\": 1299.99,\n    \"description\": \"High-performance ultrabook with 13-inch display\",\n    \"stock\": 15,\n    \"admin\": {\n        \"id\": 2,\n        \"email\": \"jane.admin@example.com\"\n    },\n    \"seller\": {\n        \"id\": 3,\n        \"email\": \"mike.seller@example.com\"\n    },\n    \"client\": {\n        \"id\": 1,\n        \"email\": \"john.client@example.com\"\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "⚡ Performance & Security Demonstrations",
+					"item": [
+						{
+							"name": "🔒 Security Test - Password Never Exposed",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/users/1",
+									"host": ["{{base_url}}"],
+									"path": ["api", "users", "1"]
+								}
+							},
+							"response": [
+								{
+									"name": "Password Never Included (Security)",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/users/1",
+											"host": ["{{base_url}}"],
+											"path": ["api", "users", "1"]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 1,\n    \"email\": \"john.client@example.com\",\n    \"role\": {\n        \"id\": 1,\n        \"name\": \"CLIENT\"\n    },\n    \"adminProducts\": [],\n    \"sellerProducts\": [],\n    \"clientProducts\": [...]\n    // ✅ Notice: NO password field!\n}"
+								}
+							]
+						},
+						{
+							"name": "📊 Payload Size: List vs Detail Comparison",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/users/basic",
+									"host": ["{{base_url}}"],
+									"path": ["api", "users", "basic"]
+								}
+							},
+							"response": [
+								{
+									"name": "Light Payload - UserBasicView (~50 bytes per user)",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/users/basic",
+											"host": ["{{base_url}}"],
+											"path": ["api", "users", "basic"]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 1,\n        \"email\": \"john.client@example.com\"\n    },\n    {\n        \"id\": 2,\n        \"email\": \"jane.admin@example.com\"\n    }\n    // ⚡ Very fast for large lists!\n]"
+								}
+							]
+						},
+						{
+							"name": "🌐 Public API Safety - Catalog View",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/products/catalog",
+									"host": ["{{base_url}}"],
+									"path": ["api", "products", "catalog"]
+								}
+							},
+							"response": [
+								{
+									"name": "Public Safe - No Business Data Exposed",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/products/catalog",
+											"host": ["{{base_url}}"],
+											"path": ["api", "products", "catalog"]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Laptop Dell XPS 13\",\n        \"price\": 1299.99,\n        \"description\": \"High-performance ultrabook\",\n        \"stock\": 15\n        // ✅ Notice: NO admin/seller/client info!\n        // Safe for public consumption\n    }\n]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "🧪 JsonView Testing Guide",
+					"item": [
+						{
+							"name": "Test 1: Verify Inheritance Works",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/users/summary",
+									"host": ["{{base_url}}"],
+									"path": ["api", "users", "summary"]
+								}
+							},
 							"response": []
 						},
 						{
-							"name": "Medium Payload - With Users",
+							"name": "Test 2: Verify No Empty Objects",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -805,14 +1065,14 @@
 							"response": []
 						},
 						{
-							"name": "Heavy Payload - Full DTOs",
+							"name": "Test 3: Verify Role Relationships",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/products",
+									"raw": "{{base_url}}/api/roles/1",
 									"host": ["{{base_url}}"],
-									"path": ["api", "products"]
+									"path": ["api", "roles", "1"]
 								}
 							},
 							"response": []
