@@ -27,8 +27,10 @@ This project has been **completely converted from French to English** with REST-
 - 🏠 **Home Endpoint**: API information and status
 - ✅ **English Validation**: All error messages in English
 - 🏢 **Business Constraints**: Strict role-based product management
-- 📊 **DTOs with @JsonBackReference**: Prevents circular references
+- 🔄 **JsonView Implementation**: Replaces @JsonBackReference/@JsonManagedReference with flexible view-based serialization
+- 📊 **Hierarchical Views**: Different data visibility levels (Basic, Summary, Detail)
 - 🔐 **Role-based Views**: Different data visibility per user role
+- 🚀 **Performance Optimized**: Granular control over JSON payload size
 
 ## 🛠️ Technologies Used
 
@@ -88,22 +90,33 @@ docker-compose up -d
 - `GET /hello` - Simple hello message
 
 ### 👥 Users
-- `GET /api/users` - Get all users
-- `GET /api/users/{id}` - Get user by ID
+- `GET /api/users` - Get all users (List view)
+- `GET /api/users/{id}` - Get user by ID (Detail view)
+- `GET /api/users/basic` - Get basic user info (id, email only)
+- `GET /api/users/summary` - Get users with roles (Summary view)
+- `GET /api/users/entity/{id}` - Get user entity (Summary view)
+- `GET /api/users/entity/{id}/basic` - Get basic user entity
+- `GET /api/users/with-role` - Get users with role information
+- `GET /api/users/list-view` - Get users optimized for lists
 - `POST /api/users` - Create new user
 - `PUT /api/users/{id}` - Update user
 - `DELETE /api/users/{id}` - Delete user
 
 ### 🎭 Roles
-- `GET /api/roles` - Get all roles
-- `GET /api/roles/{id}` - Get role by ID  
+- `GET /api/roles` - Get all roles (Basic view)
+- `GET /api/roles/{id}` - Get role by ID (WithUsers view)
 - `POST /api/roles` - Create new role
 - `PUT /api/roles/{id}` - Update role
 - `DELETE /api/roles/{id}` - Delete role
 
 ### 📦 Products (with Business Constraints)
-- `GET /api/products` - Get all products (with DTOs)
-- `GET /api/products/{id}` - Get product by ID (with relationships)
+- `GET /api/products` - Get all products (List view with DTOs)
+- `GET /api/products/{id}` - Get product by ID (Detail view with DTOs)
+- `GET /api/products/catalog` - Get public product catalog (Basic view)
+- `GET /api/products/basic` - Get basic product info (Basic view)
+- `GET /api/products/with-users` - Get products with user info (Summary view)
+- `GET /api/products/entity/{id}` - Get product entity (Summary view)
+- `GET /api/products/entity/{id}/detail` - Get detailed product entity (Detail view)
 - `POST /api/products?adminId=X&sellerId=Y&clientId=Z` - Create product with required roles
 - `PUT /api/products/{id}?adminId=X&sellerId=Y&clientId=Z` - Update product relationships
 - `DELETE /api/products/{id}` - Delete product
@@ -115,6 +128,79 @@ docker-compose up -d
 - `GET /api/products/role-view/{userId}` - Get role-based product view
 - `POST /api/products/{id}/assign-client?clientId=X` - Assign client to product
 - `POST /api/products/{id}/remove-client` - Remove client from product
+
+## 🔄 JsonView Implementation
+
+The API uses Jackson's `@JsonView` annotation to provide flexible JSON serialization with different levels of detail and circular reference prevention.
+
+### JsonView Hierarchy
+```
+JsonViews
+├── Basic (base level)
+├── Summary (extends Basic)
+├── Detail (extends Summary)
+├── User
+│   ├── Basic (id, email)
+│   ├── Summary (Basic + role)
+│   ├── Detail (Summary + products)
+│   └── List (optimized for lists)
+├── Role
+│   ├── Basic (id, name)
+│   ├── WithUsers (Basic + users)
+│   └── Detail (comprehensive)
+└── Product
+    ├── Basic (id, name, price, description, stock)
+    ├── Summary (Basic + user info)
+    ├── Detail (full product with detailed users)
+    ├── List (optimized for listings)
+    └── Catalog (public info only)
+```
+
+### Benefits
+- **Circular Reference Prevention**: Eliminates circular reference issues
+- **Granular Control**: Different endpoints return different detail levels
+- **Performance**: Reduced payload size for list operations
+- **Security**: Passwords automatically excluded from all responses
+- **Flexibility**: Easy to add new view levels without changing entities
+
+### Usage Examples
+
+**Basic User Info** (`GET /api/users/basic`):
+```json
+[
+    {
+        "id": 1,
+        "email": "admin@example.com"
+    }
+]
+```
+
+**User with Role** (`GET /api/users/summary`):
+```json
+[
+    {
+        "id": 1,
+        "email": "admin@example.com",
+        "role": {
+            "id": 1,
+            "name": "ADMIN"
+        }
+    }
+]
+```
+
+**Product Catalog** (`GET /api/products/catalog`):
+```json
+[
+    {
+        "id": 1,
+        "name": "Laptop",
+        "price": 999.99,
+        "description": "High-performance laptop",
+        "stock": 10
+    }
+]
+```
 
 ## 📊 Performance Monitoring
 
@@ -318,10 +404,17 @@ src/
 │   │   ├── UserDao.java
 │   │   ├── RoleDao.java
 │   │   └── ProductDao.java
+│   ├── dto/                 # Data transfer objects
+│   │   └── ProductDetailDTO.java
 │   ├── model/               # Entity models
 │   │   ├── User.java
 │   │   ├── Role.java
 │   │   └── Product.java
+│   ├── service/             # Business logic services
+│   │   ├── ProductMappingService.java
+│   │   └── ProductValidationService.java
+│   ├── view/                # JsonView definitions
+│   │   └── JsonViews.java
 │   ├── GlobalExceptionInterceptor.java
 │   └── M2i2Application.java
 └── resources/
