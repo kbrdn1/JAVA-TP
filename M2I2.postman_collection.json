@@ -1,0 +1,985 @@
+{
+	"info": {
+		"_postman_id": "b2b5aa42-deea-49cd-9164-cea7fd432d82",
+		"name": "M2I2 API - Complete Business Collection",
+		"description": "Complete REST API collection for M2I2 application with strict business constraints:\n- Products MUST have Admin (ADMIN role) + Seller (SELLER role)\n- Products CAN have Client (CLIENT role)\n- Role validation enforced\n- DTOs prevent circular references",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22240109"
+	},
+	"item": [
+		{
+			"name": "🏠 API Information",
+			"item": [
+				{
+					"name": "Get API Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": ["{{base_url}}"],
+							"path": [""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hello Message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/hello",
+							"host": ["{{base_url}}"],
+							"path": ["hello"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🎭 Roles Management",
+			"item": [
+				{
+					"name": "Get All Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/roles",
+							"host": ["{{base_url}}"],
+							"path": ["api", "roles"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/roles/{{role_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "roles", "{{role_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create CLIENT Role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"CLIENT\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/roles",
+							"host": ["{{base_url}}"],
+							"path": ["api", "roles"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create ADMIN Role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/roles",
+							"host": ["{{base_url}}"],
+							"path": ["api", "roles"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create SELLER Role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"SELLER\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/roles",
+							"host": ["{{base_url}}"],
+							"path": ["api", "roles"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Role",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"UPDATED_ROLE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/roles/{{role_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "roles", "{{role_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/roles/{{role_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "roles", "{{role_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users by Role",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/roles/{{role_id}}/users",
+							"host": ["{{base_url}}"],
+							"path": ["api", "roles", "{{role_id}}", "users"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "👥 Users Management",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create CLIENT User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.client@company.com\",\n  \"password\": \"client123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users?roleId=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users"],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "1",
+									"description": "CLIENT role ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create ADMIN User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"alice.admin@company.com\",\n  \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users?roleId=2",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users"],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "2",
+									"description": "ADMIN role ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create SELLER User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"mike.seller@company.com\",\n  \"password\": \"seller123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users?roleId=3",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users"],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "3",
+									"description": "SELLER role ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"updated@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Role",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"promoted@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}?roleId={{new_role_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}"],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "{{new_role_id}}",
+									"description": "New role ID to assign"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users by Role",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/role/{{role_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "role", "{{role_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Admin Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}/admin-products",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}", "admin-products"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Seller Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}/seller-products",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}", "seller-products"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Client Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}/client-products",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}", "client-products"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📦 Products Management",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "{{product_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product (Admin + Seller)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Business Laptop\",\n  \"price\": 1299.99,\n  \"description\": \"Professional laptop with admin and seller assigned\",\n  \"stock\": 10\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products?adminId={{admin_user_id}}&sellerId={{seller_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "{{admin_user_id}}",
+									"description": "REQUIRED: User with ADMIN role"
+								},
+								{
+									"key": "sellerId",
+									"value": "{{seller_user_id}}",
+									"description": "REQUIRED: User with SELLER role"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product (Admin + Seller + Client)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Gaming Desktop\",\n  \"price\": 1999.99,\n  \"description\": \"High-end gaming desktop with all roles assigned\",\n  \"stock\": 5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products?adminId={{admin_user_id}}&sellerId={{seller_user_id}}&clientId={{client_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "{{admin_user_id}}",
+									"description": "REQUIRED: User with ADMIN role"
+								},
+								{
+									"key": "sellerId",
+									"value": "{{seller_user_id}}",
+									"description": "REQUIRED: User with SELLER role"
+								},
+								{
+									"key": "clientId",
+									"value": "{{client_user_id}}",
+									"description": "OPTIONAL: User with CLIENT role"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Business Laptop\",\n  \"price\": 1399.99,\n  \"description\": \"Updated professional laptop\",\n  \"stock\": 8\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}?adminId={{admin_user_id}}&sellerId={{seller_user_id}}&clientId={{client_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "{{product_id}}"],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "{{admin_user_id}}",
+									"description": "OPTIONAL: New admin (ADMIN role required)"
+								},
+								{
+									"key": "sellerId",
+									"value": "{{seller_user_id}}",
+									"description": "OPTIONAL: New seller (SELLER role required)"
+								},
+								{
+									"key": "clientId",
+									"value": "{{client_user_id}}",
+									"description": "OPTIONAL: New client (CLIENT role required)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "{{product_id}}"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🔍 Products by Role",
+			"item": [
+				{
+					"name": "Get Products by Admin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/admin/{{admin_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "admin", "{{admin_user_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products by Seller",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/seller/{{seller_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "seller", "{{seller_user_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products by Client",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/client/{{client_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "client", "{{client_user_id}}"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🏪 Business Operations",
+			"item": [
+				{
+					"name": "Get Available Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/available",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "available"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Business Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/business-summary",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "business-summary"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role-based View (CLIENT)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/role-view/{{client_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "role-view", "{{client_user_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role-based View (ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/role-view/{{admin_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "role-view", "{{admin_user_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role-based View (SELLER)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/role-view/{{seller_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "role-view", "{{seller_user_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Client to Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}/assign-client?clientId={{client_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "{{product_id}}", "assign-client"],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "{{client_user_id}}",
+									"description": "User with CLIENT role"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Client from Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}/remove-client",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "{{product_id}}", "remove-client"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🚨 Error Testing",
+			"item": [
+				{
+					"name": "❌ Missing Admin (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Invalid Product\",\n  \"price\": 99.99,\n  \"description\": \"Missing admin - should fail\",\n  \"stock\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products?sellerId={{seller_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"],
+							"query": [
+								{
+									"key": "sellerId",
+									"value": "{{seller_user_id}}",
+									"description": "Only seller provided - missing required admin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Missing Seller (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Invalid Product\",\n  \"price\": 99.99,\n  \"description\": \"Missing seller - should fail\",\n  \"stock\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products?adminId={{admin_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "{{admin_user_id}}",
+									"description": "Only admin provided - missing required seller"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ CLIENT as Admin (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Invalid Product\",\n  \"price\": 99.99,\n  \"description\": \"CLIENT user as admin - should fail\",\n  \"stock\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products?adminId={{client_user_id}}&sellerId={{seller_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "{{client_user_id}}",
+									"description": "CLIENT user as admin - wrong role"
+								},
+								{
+									"key": "sellerId",
+									"value": "{{seller_user_id}}",
+									"description": "Valid seller"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ADMIN as Seller (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Invalid Product\",\n  \"price\": 99.99,\n  \"description\": \"ADMIN user as seller - should fail\",\n  \"stock\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products?adminId={{admin_user_id}}&sellerId={{admin_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "{{admin_user_id}}",
+									"description": "Valid admin"
+								},
+								{
+									"key": "sellerId",
+									"value": "{{admin_user_id}}",
+									"description": "ADMIN user as seller - wrong role"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Non-existent User (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Invalid Product\",\n  \"price\": 99.99,\n  \"description\": \"Non-existent user - should fail\",\n  \"stock\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products?adminId=999&sellerId={{seller_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "999",
+									"description": "Non-existent user ID"
+								},
+								{
+									"key": "sellerId",
+									"value": "{{seller_user_id}}",
+									"description": "Valid seller"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Invalid Product Data (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"\",\n  \"price\": -10.99,\n  \"description\": \"Invalid data\",\n  \"stock\": -5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products?adminId={{admin_user_id}}&sellerId={{seller_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "{{admin_user_id}}",
+									"description": "Valid admin"
+								},
+								{
+									"key": "sellerId",
+									"value": "{{seller_user_id}}",
+									"description": "Valid seller"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Assign Client Already Purchased (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/2/assign-client?clientId={{client_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "2", "assign-client"],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "{{client_user_id}}",
+									"description": "Try to assign client to product that already has one"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "role_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "product_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "client_user_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "admin_user_id",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "seller_user_id",
+			"value": "3",
+			"type": "string"
+		},
+		{
+			"key": "new_role_id",
+			"value": "2",
+			"type": "string"
+		}
+	]
+}

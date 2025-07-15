@@ -1,0 +1,58 @@
+[
+  {
+    "label": "Start App",
+    "command": "cd $ZED_WORKTREE_ROOT && ./mvnw spring-boot:run",
+    "use_new_terminal": true,
+    "reveal": "always",
+    "shell": {
+      "with_arguments": {
+        "program": "/bin/bash",
+        "args": ["-c"]
+      }
+    },
+    "allow_concurrent_runs": false,
+    "reveal_target": "dock"
+  },
+  {
+    "label": "Start App with Debug",
+    "command": "cd $ZED_WORKTREE_ROOT && ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'",
+    "use_new_terminal": true,
+    "reveal": "always",
+    "shell": {
+      "with_arguments": {
+        "program": "/bin/bash",
+        "args": ["-c"]
+      }
+    },
+    "allow_concurrent_runs": false,
+    "reveal_target": "dock"
+  },
+  {
+    "label": "Install Dependencies",
+    "command": "cd $ZED_WORKTREE_ROOT && ./mvnw install",
+    "use_new_terminal": true,
+    "reveal": "always",
+    "shell": {
+      "with_arguments": {
+        "program": "/bin/bash",
+        "args": ["-c"]
+      }
+    },
+    "allow_concurrent_runs": false,
+    "reveal_target": "dock"
+  },
+  {
+    "label": "Clean Install Dependencies",
+    "command": "cd $ZED_WORKTREE_ROOT && ./mvnw clean install",
+    "use_new_terminal": true,
+    "reveal": "always",
+    "shell": {
+      "with_arguments": {
+        "program": "/bin/bash",
+        "args": ["-c"]
+      }
+    },
+    "allow_concurrent_runs": false,
+    "reveal_target": "dock"
+  }
+]
