@@ -2,7 +2,9 @@ package edu.fbansept.m2i2.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.fbansept.m2i2.annotation.MeasureTime;
-import edu.fbansept.m2i2.view.JsonViews;
+import edu.fbansept.m2i2.view.RoleBasicView;
+import edu.fbansept.m2i2.view.RoleWithUsersView;
+import edu.fbansept.m2i2.view.UserSummaryView;
 import edu.fbansept.m2i2.dao.RoleDao;
 import edu.fbansept.m2i2.dao.UserDao;
 import edu.fbansept.m2i2.model.Role;
@@ -27,14 +29,14 @@ public class RoleController {
 
   @GetMapping
   @MeasureTime(message = "Retrieving all roles")
-  @JsonView(JsonViews.Role.Basic.class)
+  @JsonView(RoleBasicView.class)
   public List<Role> getAll() {
     return roleDao.findAll();
   }
 
   @GetMapping("/{id}")
   @MeasureTime(message = "Retrieving role by ID", includeParameters = true)
-  @JsonView(JsonViews.Role.WithUsers.class)
+  @JsonView(RoleWithUsersView.class)
   public ResponseEntity<Role> get(@PathVariable int id) {
     Optional<Role> roleOptional = roleDao.findById(id);
 
@@ -47,7 +49,7 @@ public class RoleController {
 
   @GetMapping("/{roleId}/users")
   @MeasureTime(message = "Retrieving users by role ID", includeParameters = true)
-  @JsonView(JsonViews.User.Summary.class)
+  @JsonView(UserSummaryView.class)
   public ResponseEntity<List<User>> getUsersByRoleId(@PathVariable int roleId) {
     Optional<Role> roleOptional = roleDao.findById(roleId);
 
@@ -61,7 +63,7 @@ public class RoleController {
 
   @PostMapping
   @MeasureTime(message = "Creating a new role", logLevel = "DEBUG")
-  @JsonView(JsonViews.Role.Basic.class)
+  @JsonView(RoleBasicView.class)
   public ResponseEntity<Role> add(@RequestBody @Validated(Role.add.class) Role roleSent) {
     roleDao.save(roleSent);
 
@@ -84,7 +86,7 @@ public class RoleController {
 
   @PutMapping("/{id}")
   @MeasureTime(message = "Updating role", includeParameters = true)
-  @JsonView(JsonViews.Role.Basic.class)
+  @JsonView(RoleBasicView.class)
   public ResponseEntity<?> update(
     @PathVariable int id,
     @RequestBody @Validated(Role.update.class) Role roleSent

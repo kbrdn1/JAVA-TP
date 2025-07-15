@@ -2,7 +2,11 @@ package edu.fbansept.m2i2.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.fbansept.m2i2.annotation.MeasureTime;
-import edu.fbansept.m2i2.view.JsonViews;
+import edu.fbansept.m2i2.view.ProductBasicView;
+import edu.fbansept.m2i2.view.ProductSummaryView;
+import edu.fbansept.m2i2.view.ProductDetailView;
+import edu.fbansept.m2i2.view.ProductListView;
+import edu.fbansept.m2i2.view.ProductCatalogView;
 import edu.fbansept.m2i2.dao.ProductDao;
 import edu.fbansept.m2i2.dao.UserDao;
 import edu.fbansept.m2i2.dto.ProductDetailDTO;
@@ -36,7 +40,7 @@ public class ProductController {
 
   @GetMapping
   @MeasureTime(message = "Retrieving all products")
-  @JsonView(JsonViews.Product.List.class)
+  @JsonView(ProductListView.class)
   public List<ProductDetailDTO> getAll() {
     List<Product> products = productDao.findAll();
     return mappingService.toProductDetailDTOList(products);
@@ -44,7 +48,7 @@ public class ProductController {
 
   @GetMapping("/{id}")
   @MeasureTime(message = "Retrieving product by ID", includeParameters = true)
-  @JsonView(JsonViews.Product.Detail.class)
+  @JsonView(ProductDetailView.class)
   public ResponseEntity<ProductDetailDTO> get(@PathVariable int id) {
     Optional<Product> productOptional = productDao.findById(id);
 
@@ -100,7 +104,7 @@ public class ProductController {
 
   @PostMapping
   @MeasureTime(message = "Creating a new product", logLevel = "DEBUG")
-  @JsonView(JsonViews.Product.Detail.class)
+  @JsonView(ProductDetailView.class)
   public ResponseEntity<?> add(
     @RequestBody @Validated(Product.add.class) Product productSent,
     @RequestParam Integer adminId,
@@ -153,7 +157,7 @@ public class ProductController {
 
   @PutMapping("/{id}")
   @MeasureTime(message = "Updating product", includeParameters = true)
-  @JsonView(JsonViews.Product.Detail.class)
+  @JsonView(ProductDetailView.class)
   public ResponseEntity<?> update(
     @PathVariable int id,
     @RequestBody @Validated(Product.update.class) Product productSent,
@@ -215,7 +219,7 @@ public class ProductController {
 
   @GetMapping("/available")
   @MeasureTime(message = "Retrieving available products (without clients)")
-  @JsonView(JsonViews.Product.Catalog.class)
+  @JsonView(ProductCatalogView.class)
   public List<ProductDetailDTO> getAvailableProducts() {
     List<Product> products = productDao.findAll();
     return products.stream()
@@ -327,14 +331,14 @@ public class ProductController {
 
   @GetMapping("/catalog")
   @MeasureTime(message = "Retrieving product catalog")
-  @JsonView(JsonViews.Product.Catalog.class)
+  @JsonView(ProductCatalogView.class)
   public List<Product> getCatalog() {
     return productDao.findAll();
   }
 
   @GetMapping("/entity/{id}")
   @MeasureTime(message = "Retrieving product entity by ID", includeParameters = true)
-  @JsonView(JsonViews.Product.Summary.class)
+  @JsonView(ProductSummaryView.class)
   public ResponseEntity<Product> getProductEntity(@PathVariable int id) {
     Optional<Product> productOptional = productDao.findById(id);
 
@@ -347,7 +351,7 @@ public class ProductController {
 
   @GetMapping("/entity/{id}/detail")
   @MeasureTime(message = "Retrieving detailed product entity by ID", includeParameters = true)
-  @JsonView(JsonViews.Product.Detail.class)
+  @JsonView(ProductDetailView.class)
   public ResponseEntity<Product> getProductEntityDetail(@PathVariable int id) {
     Optional<Product> productOptional = productDao.findById(id);
 
@@ -360,14 +364,14 @@ public class ProductController {
 
   @GetMapping("/basic")
   @MeasureTime(message = "Retrieving basic product information")
-  @JsonView(JsonViews.Product.Basic.class)
+  @JsonView(ProductBasicView.class)
   public List<Product> getBasicProducts() {
     return productDao.findAll();
   }
 
   @GetMapping("/with-users")
   @MeasureTime(message = "Retrieving products with user information")
-  @JsonView(JsonViews.Product.Summary.class)
+  @JsonView(ProductSummaryView.class)
   public List<Product> getProductsWithUsers() {
     return productDao.findAll();
   }

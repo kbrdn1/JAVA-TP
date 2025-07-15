@@ -2,7 +2,10 @@ package edu.fbansept.m2i2.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.fbansept.m2i2.annotation.MeasureTime;
-import edu.fbansept.m2i2.view.JsonViews;
+import edu.fbansept.m2i2.view.UserBasicView;
+import edu.fbansept.m2i2.view.UserSummaryView;
+import edu.fbansept.m2i2.view.UserDetailView;
+import edu.fbansept.m2i2.view.UserListView;
 import edu.fbansept.m2i2.dao.ProductDao;
 import edu.fbansept.m2i2.dao.RoleDao;
 import edu.fbansept.m2i2.dao.UserDao;
@@ -41,14 +44,14 @@ public class UserController {
 
   @GetMapping
   @MeasureTime(message = "Retrieving all users")
-  @JsonView(JsonViews.User.List.class)
+  @JsonView(UserListView.class)
   public List<User> getAll() {
     return userDao.findAll();
   }
 
   @GetMapping("/{id}")
   @MeasureTime(message = "Retrieving user by ID", includeParameters = true)
-  @JsonView(JsonViews.User.Detail.class)
+  @JsonView(UserDetailView.class)
   public ResponseEntity<User> get(@PathVariable int id) {
     Optional<User> userOptional = userDao.findById(id);
 
@@ -61,7 +64,7 @@ public class UserController {
 
   @GetMapping("/role/{roleId}")
   @MeasureTime(message = "Retrieving users by role ID", includeParameters = true)
-  @JsonView(JsonViews.User.Summary.class)
+  @JsonView(UserSummaryView.class)
   public ResponseEntity<List<User>> getByRoleId(@PathVariable int roleId) {
     Optional<Role> roleOptional = roleDao.findById(roleId);
 
@@ -125,7 +128,7 @@ public class UserController {
 
   @PostMapping
   @MeasureTime(message = "Creating a new user", logLevel = "DEBUG")
-  @JsonView(JsonViews.User.Summary.class)
+  @JsonView(UserSummaryView.class)
   public ResponseEntity<?> add(
     @RequestBody @Validated(User.add.class) User userSent,
     @RequestParam(required = false) Integer roleId
@@ -159,7 +162,7 @@ public class UserController {
 
   @PutMapping("/{id}")
   @MeasureTime(message = "Updating user", includeParameters = true)
-  @JsonView(JsonViews.User.Summary.class)
+  @JsonView(UserSummaryView.class)
   public ResponseEntity<?> update(
     @PathVariable int id,
     @RequestBody @Validated(User.update.class) User userSent,
@@ -198,21 +201,21 @@ public class UserController {
 
   @GetMapping("/basic")
   @MeasureTime(message = "Retrieving basic user information")
-  @JsonView(JsonViews.User.Basic.class)
+  @JsonView(UserBasicView.class)
   public List<User> getBasicUsers() {
     return userDao.findAll();
   }
 
   @GetMapping("/summary")
   @MeasureTime(message = "Retrieving user summary with roles")
-  @JsonView(JsonViews.User.Summary.class)
+  @JsonView(UserSummaryView.class)
   public List<User> getUsersSummary() {
     return userDao.findAll();
   }
 
   @GetMapping("/entity/{id}")
   @MeasureTime(message = "Retrieving user entity by ID", includeParameters = true)
-  @JsonView(JsonViews.User.Summary.class)
+  @JsonView(UserSummaryView.class)
   public ResponseEntity<User> getUserEntity(@PathVariable int id) {
     Optional<User> userOptional = userDao.findById(id);
 
@@ -225,7 +228,7 @@ public class UserController {
 
   @GetMapping("/entity/{id}/basic")
   @MeasureTime(message = "Retrieving basic user entity by ID", includeParameters = true)
-  @JsonView(JsonViews.User.Basic.class)
+  @JsonView(UserBasicView.class)
   public ResponseEntity<User> getUserEntityBasic(@PathVariable int id) {
     Optional<User> userOptional = userDao.findById(id);
 
@@ -238,14 +241,14 @@ public class UserController {
 
   @GetMapping("/with-role")
   @MeasureTime(message = "Retrieving users with role information")
-  @JsonView(JsonViews.User.Summary.class)
+  @JsonView(UserSummaryView.class)
   public List<User> getUsersWithRole() {
     return userDao.findAll();
   }
 
   @GetMapping("/list-view")
   @MeasureTime(message = "Retrieving users in list view")
-  @JsonView(JsonViews.User.List.class)
+  @JsonView(UserListView.class)
   public List<User> getUsersListView() {
     return userDao.findAll();
   }
