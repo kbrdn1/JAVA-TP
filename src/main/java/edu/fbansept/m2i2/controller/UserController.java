@@ -1,6 +1,8 @@
 package edu.fbansept.m2i2.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import edu.fbansept.m2i2.annotation.MeasureTime;
+import edu.fbansept.m2i2.view.JsonViews;
 import edu.fbansept.m2i2.dao.ProductDao;
 import edu.fbansept.m2i2.dao.RoleDao;
 import edu.fbansept.m2i2.dao.UserDao;
@@ -39,12 +41,14 @@ public class UserController {
 
   @GetMapping
   @MeasureTime(message = "Retrieving all users")
+  @JsonView(JsonViews.User.List.class)
   public List<User> getAll() {
     return userDao.findAll();
   }
 
   @GetMapping("/{id}")
   @MeasureTime(message = "Retrieving user by ID", includeParameters = true)
+  @JsonView(JsonViews.User.Detail.class)
   public ResponseEntity<User> get(@PathVariable int id) {
     Optional<User> userOptional = userDao.findById(id);
 
@@ -57,6 +61,7 @@ public class UserController {
 
   @GetMapping("/role/{roleId}")
   @MeasureTime(message = "Retrieving users by role ID", includeParameters = true)
+  @JsonView(JsonViews.User.Summary.class)
   public ResponseEntity<List<User>> getByRoleId(@PathVariable int roleId) {
     Optional<Role> roleOptional = roleDao.findById(roleId);
 
@@ -120,6 +125,7 @@ public class UserController {
 
   @PostMapping
   @MeasureTime(message = "Creating a new user", logLevel = "DEBUG")
+  @JsonView(JsonViews.User.Summary.class)
   public ResponseEntity<?> add(
     @RequestBody @Validated(User.add.class) User userSent,
     @RequestParam(required = false) Integer roleId
@@ -153,6 +159,7 @@ public class UserController {
 
   @PutMapping("/{id}")
   @MeasureTime(message = "Updating user", includeParameters = true)
+  @JsonView(JsonViews.User.Summary.class)
   public ResponseEntity<?> update(
     @PathVariable int id,
     @RequestBody @Validated(User.update.class) User userSent,
@@ -185,5 +192,61 @@ public class UserController {
     userDao.save(userSent);
 
     return new ResponseEntity<>(userSent, HttpStatus.OK);
+  }
+
+  // New endpoints using @JsonView directly with User entities
+
+  @GetMapping("/basic")
+  @MeasureTime(message = "Retrieving basic user information")
+  @JsonView(JsonViews.User.Basic.class)
+  public List<User> getBasicUsers() {
+    return userDao.findAll();
+  }
+
+  @GetMapping("/summary")
+  @MeasureTime(message = "Retrieving user summary with roles")
+  @JsonView(JsonViews.User.Summary.class)
+  public List<User> getUsersSummary() {
+    return userDao.findAll();
+  }
+
+  @GetMapping("/entity/{id}")
+  @MeasureTime(message = "Retrieving user entity by ID", includeParameters = true)
+  @JsonView(JsonViews.User.Summary.class)
+  public ResponseEntity<User> getUserEntity(@PathVariable int id) {
+    Optional<User> userOptional = userDao.findById(id);
+
+    if (userOptional.isEmpty()) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    return new ResponseEntity<>(userOptional.get(), HttpStatus.OK);
+  }
+
+  @GetMapping("/entity/{id}/basic")
+  @MeasureTime(message = "Retrieving basic user entity by ID", includeParameters = true)
+  @JsonView(JsonViews.User.Basic.class)
+  public ResponseEntity<User> getUserEntityBasic(@PathVariable int id) {
+    Optional<User> userOptional = userDao.findById(id);
+
+    if (userOptional.isEmpty()) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    return new ResponseEntity<>(userOptional.get(), HttpStatus.OK);
+  }
+
+  @GetMapping("/with-role")
+  @MeasureTime(message = "Retrieving users with role information")
+  @JsonView(JsonViews.User.Summary.class)
+  public List<User> getUsersWithRole() {
+    return userDao.findAll();
+  }
+
+  @GetMapping("/list-view")
+  @MeasureTime(message = "Retrieving users in list view")
+  @JsonView(JsonViews.User.List.class)
+  public List<User> getUsersListView() {
+    return userDao.findAll();
   }
 }

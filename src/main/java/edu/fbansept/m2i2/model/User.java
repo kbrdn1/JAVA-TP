@@ -1,7 +1,6 @@
 package edu.fbansept.m2i2.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import edu.fbansept.m2i2.view.JsonViews;
 
 @Getter
 @Setter
@@ -24,6 +24,7 @@ public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonView(JsonViews.User.Basic.class)
   protected Integer id;
 
   @Column(nullable = false, unique = true)
@@ -34,6 +35,7 @@ public class User {
     groups = { add.class, update.class },
     message = "Email is malformed"
   )
+  @JsonView(JsonViews.User.Basic.class)
   protected String email;
 
   @Column(nullable = false)
@@ -41,19 +43,19 @@ public class User {
   protected String password;
 
   @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JsonManagedReference("user-admin-products")
+  @JsonView(JsonViews.User.Detail.class)
   protected List<Product> adminProducts = new ArrayList<>();
 
   @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JsonManagedReference("user-seller-products")
+  @JsonView(JsonViews.User.Detail.class)
   protected List<Product> sellerProducts = new ArrayList<>();
 
   @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-  @JsonManagedReference("user-client-products")
+  @JsonView(JsonViews.User.Detail.class)
   protected List<Product> clientProducts = new ArrayList<>();
 
   @ManyToOne
   @JoinColumn(name = "role_id")
-  @JsonBackReference("role-users")
+  @JsonView(JsonViews.User.Summary.class)
   protected Role role;
 }
