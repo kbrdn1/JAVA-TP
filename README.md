@@ -133,39 +133,45 @@ docker-compose up -d
 
 The API uses Jackson's `@JsonView` annotation to provide flexible JSON serialization with different levels of detail and circular reference prevention.
 
-### JsonView Hierarchy
+### JsonView Class Hierarchy
 ```
-JsonViews
-├── Basic (base level)
-├── Summary (extends Basic)
-├── Detail (extends Summary)
-├── User
-│   ├── Basic (id, email)
-│   ├── Summary (Basic + role)
-│   ├── Detail (Summary + products)
-│   └── List (optimized for lists)
-├── Role
-│   ├── Basic (id, name)
-│   ├── WithUsers (Basic + users)
-│   └── Detail (comprehensive)
-└── Product
-    ├── Basic (id, name, price, description, stock)
-    ├── Summary (Basic + user info)
-    ├── Detail (full product with detailed users)
-    ├── List (optimized for listings)
-    └── Catalog (public info only)
+Base Views:
+├── BasicView (foundation)
+│   ├── SummaryView (extends BasicView)
+│   │   └── DetailView (extends SummaryView)
+│   └── PublicView (extends BasicView, for external access)
+
+User Views:
+├── UserBasicView (extends BasicView)
+│   ├── UserListView (extends UserBasicView, optimized for lists)
+│   └── UserSummaryView (extends UserBasicView)
+│       └── UserDetailView (extends UserSummaryView)
+
+Role Views:
+├── RoleBasicView (extends BasicView)
+│   └── RoleWithUsersView (extends RoleBasicView)
+│       └── RoleDetailView (extends RoleWithUsersView)
+
+Product Views:
+├── ProductBasicView (extends BasicView)
+│   ├── ProductListView (extends ProductBasicView, optimized for lists)
+│   ├── ProductCatalogView (extends ProductBasicView, for public access)
+│   └── ProductSummaryView (extends ProductBasicView)
+│       └── ProductDetailView (extends ProductSummaryView)
 ```
 
 ### Benefits
 - **Circular Reference Prevention**: Eliminates circular reference issues
-- **Granular Control**: Different endpoints return different detail levels
+- **Granular Control**: Different endpoints return different detail levels  
 - **Performance**: Reduced payload size for list operations
 - **Security**: Passwords automatically excluded from all responses
 - **Flexibility**: Easy to add new view levels without changing entities
+- **Class-based Inheritance**: Proper OOP inheritance with individual view classes
+- **Better Maintainability**: Each view is a separate, documented class
 
 ### Usage Examples
 
-**Basic User Info** (`GET /api/users/basic`):
+**Basic User Info** (`GET /api/users/basic`) - Uses `UserBasicView`:
 ```json
 [
     {
@@ -175,7 +181,7 @@ JsonViews
 ]
 ```
 
-**User with Role** (`GET /api/users/summary`):
+**User with Role** (`GET /api/users/summary`) - Uses `UserSummaryView`:
 ```json
 [
     {
@@ -189,7 +195,7 @@ JsonViews
 ]
 ```
 
-**Product Catalog** (`GET /api/products/catalog`):
+**Product Catalog** (`GET /api/products/catalog`) - Uses `ProductCatalogView`:
 ```json
 [
     {
@@ -413,8 +419,24 @@ src/
 │   ├── service/             # Business logic services
 │   │   ├── ProductMappingService.java
 │   │   └── ProductValidationService.java
-│   ├── view/                # JsonView definitions
-│   │   └── JsonViews.java
+│   ├── view/                # JsonView definitions (individual classes)
+│   │   ├── BasicView.java
+│   │   ├── SummaryView.java
+│   │   ├── DetailView.java
+│   │   ├── PublicView.java
+│   │   ├── UserBasicView.java
+│   │   ├── UserSummaryView.java
+│   │   ├── UserDetailView.java
+│   │   ├── UserListView.java
+│   │   ├── RoleBasicView.java
+│   │   ├── RoleWithUsersView.java
+│   │   ├── RoleDetailView.java
+│   │   ├── ProductBasicView.java
+│   │   ├── ProductSummaryView.java
+│   │   ├── ProductDetailView.java
+│   │   ├── ProductListView.java
+│   │   ├── ProductCatalogView.java
+│   │   └── ViewIndex.java
 │   ├── GlobalExceptionInterceptor.java
 │   └── M2i2Application.java
 └── resources/
